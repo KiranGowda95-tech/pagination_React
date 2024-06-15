@@ -18,7 +18,12 @@ function App() {
     fetchProducts();
   }, []);
   const selectPageHandler = (selectedPage) => {
-    setPage(selectedPage);
+    if (
+      selectedPage >= 1 &&
+      selectedPage <= products.length / 10 &&
+      selectedPage !== page
+    )
+      setPage(selectedPage);
   };
 
   return (
@@ -37,7 +42,12 @@ function App() {
       )}
       {products.length > 0 && (
         <div className="pagination">
-          <span onClick={() => selectPageHandler(page - 1)}>◀</span>
+          <span
+            className={page > 1 ? "" : "pagination__disable"}
+            onClick={() => selectPageHandler(page - 1)}
+          >
+            ◀
+          </span>
           {[...Array(products.length / 10)].map((_, i) => {
             return (
               <span
@@ -49,7 +59,12 @@ function App() {
               </span>
             );
           })}
-          <span onClick={() => selectPageHandler(page + 1)}>▶</span>
+          <span
+            onClick={() => selectPageHandler(page + 1)}
+            className={page < products.length / 10 ? "" : "pagination__disable"}
+          >
+            ▶
+          </span>
         </div>
       )}
     </div>
